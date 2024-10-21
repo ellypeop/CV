@@ -36,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./main.pdf
+          asset_path: ./cv.pdf
           asset_name:  CV-${{ steps.time.outputs.time }}.pdf
           asset_content_type: application/pdf
           
