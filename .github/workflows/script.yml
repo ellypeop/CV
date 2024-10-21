@@ -12,15 +12,25 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: cv.tex
+      - name: Move PDF to Working Directory
+        run: mv cv.pdf ./
       - name: Check if PDF was generated
         run: |
           if [ ! -f cv.pdf ]; then
             echo "PDF was not generated."
             exit 1
           fi
-      - name: Move PDF to working directory
+      - name: Commit PDF
+        id: commit_pdf
         run: |
-          mv cv.pdf ./  # Move the PDF to the working directory
+          if [ -f cv.pdf ]; then
+            git config --local user.email "action[bot]@github.com"
+            git config --local user.name "github-actions[bot]"
+            git add cv.pdf
+            git commit -m "[bot] updated PDF file"
+          else
+            echo "No PDF file found, skipping commit."
+          fi
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
         with:
