@@ -7,7 +7,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3.2.0
+        uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
       - name: Uploading artifact
