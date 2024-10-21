@@ -12,8 +12,6 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: cv.tex
-      - name: Move PDF to Working Directory
-        run: mv cv.pdf ./
       - name: Check if PDF was generated
         run: |
           if [ ! -f cv.pdf ]; then
