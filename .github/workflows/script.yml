@@ -83,13 +83,14 @@ jobs:
       - name: Commit PNG
         id: commit
         run: |
-          if [ -f cv.png ]; then
+          png_files=$(ls cv-*.png 2>/dev/null)
+          if [ ! -z "$png_files" ]; then
             git config --local user.email "action[bot]@github.com"
             git config --local user.name "github-actions[bot]"
-            git add cv.png
-            git commit -m "[bot] updated cv.png"
+            git add cv-*.png
+            git commit -m "[bot] updated PNG files"
           else
-            echo "cv.png does not exist, skipping commit."
+            echo "No PNG files found, skipping commit."
           fi
       - name: Push changes
         uses: ad-m/github-push-action@master
