@@ -77,7 +77,7 @@ jobs:
       - name: Convert PDF to PNG
         run: |
           echo "Starting PDF to PNG conversion..."
-          convert -density 300 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png || { echo "Conversion failed"; exit 1; }
+          convert -density 700 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png || { echo "Conversion failed"; exit 1; }
           echo "Conversion complete. Listing files..."
           ls -la  # List files to verify if cv.png was created
       - name: Commit PNG
