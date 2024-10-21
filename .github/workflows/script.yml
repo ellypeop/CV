@@ -23,13 +23,13 @@ jobs:
           format: 'YYYY-MM-DD-HH-mm-ss'
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: CV compiled on ${{ steps.time.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
