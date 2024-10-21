@@ -47,35 +47,21 @@ jobs:
           asset_content_type: application/pdf
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
-      - name: Change ImageMagick security policy
+      - name: Increase ImageMagick cache limit
         run: |
-          DQT='"' 
-          SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
-          RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
-          
-          # Increase limits
-          MAP="name=${DQT}map${DQT} value=${DQT}2GiB${DQT}"  # Increased map size
-          MEM="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"  # Increased memory limit
-
-          sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MAP/name=${DQT}map${DQT} value=${DQT}2GiB${DQT}/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MEM/name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}/" /etc/ImageMagick-6/policy.xml
-          
+          sudo sed -i 's/<policy domain="resource" name="memory" value="256MiB"\/>/<policy domain="resource" name="memory" value="2GiB"\/>/' /etc/ImageMagick-6/policy.xml
+          sudo sed -i 's/<policy domain="resource" name="map" value="512MiB"\/>/<policy domain="resource" name="map" value="4GiB"\/>/' /etc/ImageMagick-6/policy.xml
       - name: Convert PDF to PNG
-        run: convert -density 900 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png
-      - name: Check if PNG was created
-        run: |
-          if [ ! -f cv.png ]; then
-            echo "PNG was not generated."
-            exit 1
-          fi
+        run: convert -density 300 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png
+
       - name: Commit PNG
         id: commit
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions[bot]"
           git add cv.png
-          git commit -m "[bot] updated cv.png" || echo "No changes to commit"
+          git commit -m "[bot] updated cv.png"
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
