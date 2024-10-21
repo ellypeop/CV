@@ -75,14 +75,22 @@ jobs:
           sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
       - name: Convert PDF to PNG
-        run: convert -density 300 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png
+        run: |
+          echo "Starting PDF to PNG conversion..."
+          convert -density 300 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png || { echo "Conversion failed"; exit 1; }
+          echo "Conversion complete. Listing files..."
+          ls -la  # List files to verify if cv.png was created
       - name: Commit PNG
         id: commit
         run: |
-          git config --local user.email "action[bot]@github.com"
-          git config --local user.name "github-actions[bot]"
-          git add cv.png
-          git commit -m "[bot] updated cv.png"
+          if [ -f cv.png ]; then
+            git config --local user.email "action[bot]@github.com"
+            git config --local user.name "github-actions[bot]"
+            git add cv.png
+            git commit -m "[bot] updated cv.png"
+          else
+            echo "cv.png does not exist, skipping commit."
+          fi
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
