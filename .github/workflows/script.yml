@@ -39,7 +39,7 @@ jobs:
         uses: nanzm/get-time-action@v1.1
         with:
           timeZone: +1
-          format: 'YYYY-MM-DD-HH-mm-ss'
+          format: 'DD-MM-YYYY-HH-mm-ss'
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
