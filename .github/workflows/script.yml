@@ -77,8 +77,14 @@ jobs:
       - name: Convert PDF to PNG
         run: |
           echo "Starting PDF to PNG conversion..."
-          convert -density 700 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB -flatten cv.png || { echo "Conversion failed"; exit 1; }
+          convert -density 700 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv-%d.png || { echo "Conversion failed"; exit 1; }
           echo "Conversion complete. Listing files..."
+          ls -la  # List files to verify if cv.png was created
+      - name: Combine PNGs into a single image
+        run: |
+          echo "Combining PNGs into a single image..."
+          convert cv-*.png -append cv.png || { echo "Combination failed"; exit 1; }
+          echo "Combination complete. Listing files..."
           ls -la  # List files to verify if cv.png was created
       - name: Commit PNG
         id: commit
