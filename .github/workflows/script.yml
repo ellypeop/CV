@@ -27,7 +27,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          name: CV compiled on ${{ steps.time.outputs.time }}
+          name: cv compiled on ${{ steps.time.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
       - name: Upload Release Asset
         id: upload-release-asset
@@ -37,7 +37,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./cv.pdf
-          asset_name:  CV-${{ steps.time.outputs.time }}.pdf
+          asset_name:  cv-${{ steps.time.outputs.time }}.pdf
           asset_content_type: application/pdf
           
       - name: Install ghostscript
@@ -67,14 +67,14 @@ jobs:
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
           
       - name: Convert PDF to PNG
-        run: convert -density 900 -background white -alpha off main.pdf -resize 25% -quality 90 -colorspace RGB resume.png
+        run: convert -density 900 -background white -alpha off cv.pdf -resize 25% -quality 90 -colorspace RGB cv.png
       - name: Commit PNG
         id: commit
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions[bot]"
-          git add resume.png
-          git commit -m "[bot] updated resume.png"
+          git add cv.png
+          git commit -m "[bot] updated cv.png"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
