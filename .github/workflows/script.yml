@@ -18,6 +18,9 @@ jobs:
             echo "PDF was not generated."
             exit 1
           fi
+      - name: Move PDF to working directory
+        run: |
+          mv cv.pdf ./  # Move the PDF to the working directory
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
         with:
