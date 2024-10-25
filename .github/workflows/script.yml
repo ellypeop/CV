@@ -109,6 +109,7 @@ jobs:
             echo "No PNG file found, skipping commit."
           fi
       - name: Push changes
+        if: steps.commit_pdf.outcome == 'success'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
